@@ -1,0 +1,117 @@
+.about {
+  padding: var(--section-padding);
+  background: var(--color-snow);
+  position: relative;
+  overflow: hidden;
+}
+
+.about__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: center;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.about__content {
+  padding-right: var(--space-md);
+}
+
+.about__text {
+  color: var(--color-graphite-light);
+  line-height: 1.9;
+  margin-bottom: var(--space-md);
+}
+
+.about__highlight {
+  font-family: var(--font-heading);
+  font-size: var(--fs-h4);
+  font-style: italic;
+  color: var(--color-gold);
+  border-left: 3px solid var(--color-gold);
+  padding-left: var(--space-sm);
+  margin: var(--space-md) 0;
+}
+
+.about__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+.about__stat {
+  text-align: center;
+  padding: var(--space-sm);
+}
+
+.about__statNumber {
+  font-family: var(--font-accent);
+  font-size: var(--fs-h1);
+  font-weight: 800;
+  color: var(--color-gold);
+  line-height: 1;
+  display: block;
+}
+
+.about__statLabel {
+  font-family: var(--font-accent);
+  font-size: var(--fs-tag);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-mid-gray);
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.about__imageWrapper {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.about__image {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  transition: transform var(--transition-slow);
+}
+
+.about__imageWrapper:hover .about__image {
+  transform: scale(1.03);
+}
+
+.about__imageAccent {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 200px;
+  height: 200px;
+  border: 3px solid var(--color-gold-20);
+  border-radius: var(--radius-lg);
+  z-index: -1;
+}
+
+@media (max-width: 968px) {
+  .about__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .about__content {
+    padding-right: 0;
+  }
+
+  .about__image {
+    height: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about__stats {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+}

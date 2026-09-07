@@ -55,19 +55,15 @@
   max-width: 900px;
 }
 
-.hero__subtitle {
-  font-family: var(--font-accent);
-  font-size: var(--fs-h4);
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.6);
-  letter-spacing: 8px;
-  text-transform: uppercase;
-  margin-bottom: var(--space-sm);
+.hero__logo {
+  width: 168px;
+  margin: 0 auto var(--space-md);
+  filter: drop-shadow(0 4px 20px rgba(205, 167, 83, 0.3));
 }
 
 .hero__tagline {
   font-family: var(--font-heading);
-  font-size: var(--fs-h2);
+  font-size: calc(var(--fs-h2) / 2);
   color: var(--color-white);
   font-weight: 400;
   font-style: italic;
@@ -114,12 +110,11 @@
 }
 
 @media (max-width: 768px) {
-  .hero__subtitle {
-    letter-spacing: 4px;
-    font-size: var(--fs-small);
+  .hero__logo {
+    width: 120px;
   }
   
   .hero__tagline {
-    font-size: var(--fs-h3);
+    font-size: calc(var(--fs-h3) / 2);
   }
 }

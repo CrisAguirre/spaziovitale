@@ -41,8 +41,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: var(--gradient-gold);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
   transform: scaleX(0);
   transition: transform var(--transition-base);
 }

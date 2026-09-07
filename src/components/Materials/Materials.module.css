@@ -69,3 +69,10 @@
   text-transform: uppercase;
   letter-spacing: 1px;
 }
+
+@media (max-width: 768px) {
+  .materials__card {
+    width: 260px;
+    height: 340px;
+  }
+}

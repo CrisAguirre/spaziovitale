@@ -16,169 +16,80 @@ export default function Hero() {
     canvas.width = width;
     canvas.height = height;
 
-    const config = {
-      lineColor: '#CDA753',
-      glowColor: '#CDA753',
-      speed: 0.2,
-      scale: 2,
-      layers: 4,
-      waveAmplitude: 0.015,
-      waveFrequency: 3,
-      waveSpeed: 0.15,
-      layerSpeed: 0.08,
-      twist: 0.1,
-      twistFrequency: 5,
-      twistSpeed: 1.2,
-      lineFrequency: 5,
-      lineSpacing: 2,
-      lineSharpness: 16,
-      glowFalloff: 10,
-      glowIntensity: 1.6,
-      vignette: 0.8,
-      grain: 0.05,
-      fps: 60
-    };
-
     class Fiber {
-      constructor(layer) {
-        this.layer = layer;
+      constructor() {
         this.reset();
       }
       
       reset() {
         this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.len = (Math.random() * 100 + 80) * config.scale;
-        this.speed = (Math.random() * 0.1 + 0.1) * config.speed * (1 - this.layer * 0.1);
-        this.angle = Math.random() * Math.PI * 2;
-        this.baseAngle = this.angle;
-        this.twist = config.twist * (Math.random() - 0.5);
-        this.wavePhase = Math.random() * Math.PI * 2;
-        this.waveAmp = config.waveAmplitude * (Math.random() * 0.5 + 0.5);
-        this.opacity = (Math.random() * 0.4 + 0.1) * (1 - this.layer * 0.15);
-        this.radius = (Math.random() * 1 + 0.5) * config.scale;
-        this.layerOffset = this.layer * config.layerSpeed;
+        this.len = height * 1.2;
+        this.opacity = Math.random() * 0.2 + 0.03;
+        this.phase = Math.random() * Math.PI * 2;
+        this.wobbleSpeed = Math.random() * 0.015 + 0.005;
+        this.wobbleAmp = Math.random() * 30 + 15;
+        this.thickness = Math.random() * 1.5 + 0.5;
+        this.speedMultiplier = Math.random() * 0.5 + 0.5;
       }
       
-      update(time) {
-        this.wavePhase += config.waveSpeed * 0.01;
-        this.twistPhase = time * config.twistSpeed * 0.001;
-        
-        const wave = Math.sin(this.wavePhase + this.x * config.waveFrequency * 0.001) * this.waveAmp;
-        const twist = Math.sin(this.twistPhase + this.y * config.twistFrequency * 0.01) * this.twist;
-        
-        this.angle = this.baseAngle + wave + twist;
-        
-        this.x += Math.cos(this.angle) * this.speed;
-        this.y += Math.sin(this.angle) * this.speed;
-        
-        const margin = 100;
-        if (this.x < -margin || this.x > width + margin || 
-            this.y < -margin || this.y > height + margin) {
-          this.reset();
-          this.y = this.y < 0 ? height + 50 : -50;
-        }
+      update() {
+        this.phase += this.wobbleSpeed * this.speedMultiplier;
       }
       
-      draw(time) {
+      draw() {
+        const sway = Math.sin(this.phase) * this.wobbleAmp;
+        const sway2 = Math.sin(this.phase * 0.7) * this.wobbleAmp * 0.5;
+        
         const gradient = ctx.createLinearGradient(
-          this.x, this.y,
-          this.x + Math.cos(this.angle) * this.len,
-          this.y + Math.sin(this.angle) * this.len
+          this.x, 0,
+          this.x + sway, 0
         );
-        
-        const pulse = (Math.sin(time * 0.002 + this.wavePhase) + 1) / 2;
-        const intensity = config.glowIntensity * (0.8 + pulse * 0.2);
-        
         gradient.addColorStop(0, `rgba(205, 167, 83, 0)`);
-        gradient.addColorStop(0.3, `rgba(205, 167, 83, ${this.opacity * 0.5 * intensity})`);
-        gradient.addColorStop(0.5, `rgba(205, 167, 83, ${this.opacity * intensity})`);
-        gradient.addColorStop(0.7, `rgba(205, 167, 83, ${this.opacity * 0.5 * intensity})`);
+        gradient.addColorStop(0.3, `rgba(205, 167, 83, ${this.opacity})`);
+        gradient.addColorStop(0.5, `rgba(205, 167, 83, ${this.opacity * 1.5})`);
+        gradient.addColorStop(0.7, `rgba(205, 167, 83, ${this.opacity})`);
         gradient.addColorStop(1, `rgba(205, 167, 83, 0)`);
-        
-        ctx.save();
-        ctx.shadowColor = config.glowColor;
-        ctx.shadowBlur = config.glowFalloff * config.scale;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
         
         ctx.beginPath();
         ctx.strokeStyle = gradient;
-        ctx.lineWidth = this.radius;
+        ctx.lineWidth = this.thickness;
         ctx.lineCap = 'round';
-        ctx.moveTo(this.x, this.y);
         
-        const midX = this.x + Math.cos(this.angle) * this.len * 0.5;
-        const midY = this.y + Math.sin(this.angle) * this.len * 0.5;
-        const cpX = midX + Math.sin(this.wavePhase) * 20 * this.waveAmp * 100;
-        const cpY = midY + Math.cos(this.wavePhase) * 20 * this.waveAmp * 100;
+        const startY = 0;
+        const endY = height;
+        const midY = height / 2;
         
-        ctx.quadraticCurveTo(cpX, cpY,
-          this.x + Math.cos(this.angle) * this.len,
-          this.y + Math.sin(this.angle) * this.len
+        ctx.moveTo(this.x, startY);
+        ctx.quadraticCurveTo(
+          this.x + sway, midY,
+          this.x + sway2, endY
         );
         ctx.stroke();
-        ctx.restore();
       }
     }
 
-    const fibers = [];
-    for (let layer = 0; layer < config.layers; layer++) {
-      const count = Math.floor(25 / config.layerSpeed);
-      for (let i = 0; i < count; i++) {
-        fibers.push(new Fiber(layer));
-      }
-    }
+    const fibers = Array.from({ length: 35 }, () => new Fiber());
 
-    let lastTime = 0;
-    const frameInterval = 1000 / config.fps;
-
-    const animate = (time) => {
-      if (time - lastTime >= frameInterval) {
-        lastTime = time;
-        
-        ctx.fillStyle = `rgba(30, 35, 40, 0.15)`;
-        ctx.fillRect(0, 0, width, height);
-        
-        if (config.vignette > 0) {
-          const vignetteGradient = ctx.createRadialGradient(
-            width / 2, height / 2, height * 0.3,
-            width / 2, height / 2, height * 0.8
-          );
-          vignetteGradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
-          vignetteGradient.addColorStop(1, `rgba(0, 0, 0, ${config.vignette * 0.5})`);
-          ctx.fillStyle = vignetteGradient;
-          ctx.fillRect(0, 0, width, height);
-        }
-        
-        fibers.forEach(fiber => {
-          fiber.update(time);
-          fiber.draw(time);
-        });
-        
-        if (config.grain > 0) {
-          const imageData = ctx.getImageData(0, 0, width, height);
-          const data = imageData.data;
-          for (let i = 0; i < data.length; i += 4) {
-            const noise = (Math.random() - 0.5) * config.grain * 25;
-            data[i] = Math.min(255, Math.max(0, data[i] + noise));
-            data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + noise));
-            data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + noise));
-          }
-          ctx.putImageData(imageData, 0, 0);
-        }
-      }
+    const animate = () => {
+      ctx.fillStyle = 'rgba(30, 35, 40, 0.1)';
+      ctx.fillRect(0, 0, width, height);
+      
+      fibers.forEach(fiber => {
+        fiber.update();
+        fiber.draw();
+      });
       
       animationId = requestAnimationFrame(animate);
     };
 
-    animate(0);
+    animate();
 
     const handleResize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
       canvas.width = width;
       canvas.height = height;
+      fibers.forEach(f => f.len = height * 1.2);
     };
 
     window.addEventListener('resize', handleResize);
@@ -191,10 +102,8 @@ export default function Hero() {
 
   return (
     <section className={styles.hero} id="hero">
-      {/* Ghost Fibers Background */}
       <canvas className={styles.hero__ghostFibers} ref={canvasRef} />
       
-      {/* Background Video */}
       <div className={styles.hero__bg}>
         <video
           src="/src/assets/media/1.mp4"
@@ -203,30 +112,25 @@ export default function Hero() {
           loop
           muted
           playsInline
-          onError={(e) => {
-            e.target.style.display = 'none';
-          }}
+          onError={(e) => { e.target.style.display = 'none'; }}
         />
         <img
           src="/images/hero-bg.jpg"
           alt=""
           className={styles.hero__bgImage}
-          onError={(e) => {
-            e.target.style.display = 'none';
-          }}
+          onError={(e) => { e.target.style.display = 'none'; }}
         />
       </div>
 
-      {/* Content */}
       <div className={styles.hero__content}>
-        <motion.p
-          className={styles.hero__subtitle}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          Muebles Arquitectónicos
-        </motion.p>
+        <motion.img
+          src="/logo.png"
+          alt="Spazio Vitale"
+          className={styles.hero__logo}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
+        />
 
         <motion.h1
           className={styles.hero__tagline}
@@ -252,7 +156,6 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
       <motion.div
         className={styles.hero__scrollIndicator}
         initial={{ opacity: 0 }}

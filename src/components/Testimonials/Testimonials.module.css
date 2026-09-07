@@ -75,3 +75,13 @@
   background: var(--color-gold) !important;
   transform: scale(1.2);
 }
+
+@media (max-width: 768px) {
+  .testimonials__card {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .testimonials__text {
+    font-size: var(--fs-body);
+  }
+}

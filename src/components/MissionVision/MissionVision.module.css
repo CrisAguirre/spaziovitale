@@ -46,9 +46,9 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: var(--gradient-gold);
-  opacity: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  opacity: 0.4;
   transition: opacity var(--transition-base);
 }
 

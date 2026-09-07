@@ -15,26 +15,26 @@ export default function Contact() {
     setLoading(true);
     setStatus({ type: '', message: '' });
 
+    const form = e.target;
+    const formDataObj = new FormData(form);
+    
     try {
-      // Intentamos llamar al backend (aunque nodelmailer esté como placeholder)
-      const res = await fetch('http://localhost:4000/api/contact', {
+      const res = await fetch('https://formsubmit.co/ajax/spaziovitale.gerencia@gmail.com', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: formDataObj,
+        headers: {
+          'Accept': 'application/json'
+        }
       });
       
-      const data = await res.json();
-      
-      if (data.success) {
-        setStatus({ type: 'success', message: '¡Mensaje enviado con éxito!' });
+      if (res.ok) {
+        setStatus({ type: 'success', message: '¡Mensaje enviado con éxito! Te responderemos pronto.' });
         setFormData({ name: '', email: '', phone: '', message: '' });
       } else {
-        setStatus({ type: 'error', message: data.error || 'Ocurrió un error.' });
+        throw new Error('Failed');
       }
     } catch (error) {
-      // Fallback por si el backend no está encendido
-      setStatus({ type: 'success', message: '¡Mensaje simulado enviado con éxito!' });
-      setFormData({ name: '', email: '', phone: '', message: '' });
+      setStatus({ type: 'error', message: 'Ocurrió un error. Por favor intenta de nuevo.' });
     } finally {
       setLoading(false);
     }
@@ -101,7 +101,10 @@ export default function Contact() {
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.4 }}
         >
-          <form className={styles.contact__form} onSubmit={handleSubmit}>
+          <form className={styles.contact__form} onSubmit={handleSubmit} action="https://formsubmit.co/spaziovitale.gerencia@gmail.com" method="POST">
+            <input type="hidden" name="_subject" value="Nuevo mensaje desde Spazio Vitale" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_template" value="table" />
             <div className={styles.contact__inputGroup}>
               <input
                 type="text"

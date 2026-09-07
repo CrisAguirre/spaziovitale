@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { X, CaretLeft, CaretRight } from '@phosphor-icons/react';
 import styles from './Portfolio.module.css';
+import mediaImages from '../../assets/media/images';
 
 const MOCK_CATEGORIES = [
   { id: 'todos', label: 'Todos' },
@@ -14,18 +15,9 @@ const MOCK_CATEGORIES = [
   { id: 'pergolas', label: 'Pérgolas' },
 ];
 
-const MOCK_IMAGES = [
-  { id: 1, url: 'https://images.unsplash.com/photo-1556910103-1c02745a872f?w=800&q=80', category: 'cocinas' },
-  { id: 2, url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80', category: 'cocinas' },
-  { id: 3, url: 'https://images.unsplash.com/photo-1588854337115-1c67d9247e4d?w=800&q=80', category: 'locales' },
-  { id: 4, url: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&q=80', category: 'banos' },
-  { id: 5, url: 'https://images.unsplash.com/photo-1593696954577-ab3d39317b97?w=800&q=80', category: 'estudios' },
-  { id: 6, url: 'https://images.unsplash.com/photo-1595526114101-2a73ef8ea8c8?w=800&q=80', category: 'closets' },
-];
-
 export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('todos');
-  const [images, setImages] = useState(MOCK_IMAGES);
+  const [images] = useState(mediaImages);
   const [lightboxImg, setLightboxImg] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   

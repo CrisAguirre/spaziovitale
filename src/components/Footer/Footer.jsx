@@ -1,4 +1,4 @@
-import { InstagramLogo, FacebookLogo, WhatsappLogo } from '@phosphor-icons/react';
+import { InstagramLogo, FacebookLogo, TiktokLogo } from '@phosphor-icons/react';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -13,11 +13,11 @@ export default function Footer() {
           <a href="https://instagram.com/SPAZIOVITALEMUEBLESYCOCINAS" target="_blank" rel="noopener noreferrer" className={styles.footer__socialLink}>
             <InstagramLogo />
           </a>
-          <a href="#" className={styles.footer__socialLink}>
+          <a href="https://www.facebook.com/MueblesSPAZIOVITALE/" target="_blank" rel="noopener noreferrer" className={styles.footer__socialLink}>
             <FacebookLogo />
           </a>
-          <a href="https://wa.me/573103888709" target="_blank" rel="noopener noreferrer" className={styles.footer__socialLink}>
-            <WhatsappLogo />
+          <a href="https://www.tiktok.com/@spaziovitalemuebles/" target="_blank" rel="noopener noreferrer" className={styles.footer__socialLink}>
+            <TiktokLogo />
           </a>
         </div>
 

@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { X, CaretLeft, CaretRight } from '@phosphor-icons/react';
+import { X, CaretLeft, CaretRight, Play } from '@phosphor-icons/react';
 import styles from './Portfolio.module.css';
 import mediaImages from '../../assets/media/images';
+import mediaVideos from '../../assets/media/videos';
 
 const MOCK_CATEGORIES = [
   { id: 'todos', label: 'Todos' },
@@ -13,12 +14,18 @@ const MOCK_CATEGORIES = [
   { id: 'estudios', label: 'Estudios' },
   { id: 'closets', label: 'Closets' },
   { id: 'pergolas', label: 'Pérgolas' },
+  { id: 'videos', label: 'Videos' },
+];
+
+// Merge images (adding type) and videos into a single gallery array
+const allItems = [
+  ...mediaImages.map(img => ({ ...img, type: 'image' })),
+  ...mediaVideos,
 ];
 
 export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('todos');
-  const [images] = useState(mediaImages);
-  const [lightboxImg, setLightboxImg] = useState(null);
+  const [lightboxItem, setLightboxItem] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -37,33 +44,35 @@ export default function Portfolio() {
   }, []);
   */
 
-  const filteredImages = activeFilter === 'todos' 
-    ? images 
-    : images.filter(img => img.category === activeFilter);
+  const filteredItems = activeFilter === 'todos' 
+    ? allItems 
+    : activeFilter === 'videos'
+      ? allItems.filter(item => item.type === 'video')
+      : allItems.filter(item => item.category === activeFilter);
 
   const openLightbox = (index) => {
     setCurrentIndex(index);
-    setLightboxImg(filteredImages[index]);
+    setLightboxItem(filteredItems[index]);
     document.body.style.overflow = 'hidden';
   };
 
   const closeLightbox = () => {
-    setLightboxImg(null);
+    setLightboxItem(null);
     document.body.style.overflow = 'auto';
   };
 
   const nextImage = (e) => {
     e.stopPropagation();
-    const nextIndex = (currentIndex + 1) % filteredImages.length;
+    const nextIndex = (currentIndex + 1) % filteredItems.length;
     setCurrentIndex(nextIndex);
-    setLightboxImg(filteredImages[nextIndex]);
+    setLightboxItem(filteredItems[nextIndex]);
   };
 
   const prevImage = (e) => {
     e.stopPropagation();
-    const prevIndex = (currentIndex - 1 + filteredImages.length) % filteredImages.length;
+    const prevIndex = (currentIndex - 1 + filteredItems.length) % filteredItems.length;
     setCurrentIndex(prevIndex);
-    setLightboxImg(filteredImages[prevIndex]);
+    setLightboxItem(filteredItems[prevIndex]);
   };
 
   return (
@@ -103,9 +112,9 @@ export default function Portfolio() {
         layout
       >
         <AnimatePresence>
-          {filteredImages.map((img, index) => (
+          {filteredItems.map((item, index) => (
             <motion.div
-              key={img.id}
+              key={item.id}
               layout
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -114,9 +123,31 @@ export default function Portfolio() {
               className={styles.portfolio__item}
               onClick={() => openLightbox(index)}
             >
-              <img src={img.url} alt={`Proyecto ${img.category}`} className={styles.portfolio__itemImage} />
+              {item.type === 'video' ? (
+                <>
+                  <video
+                    src={item.url}
+                    className={styles.portfolio__itemImage}
+                    muted
+                    preload="metadata"
+                    playsInline
+                  />
+                  <div className={styles.portfolio__playOverlay}>
+                    <div className={styles.portfolio__playButton}>
+                      <Play weight="fill" />
+                    </div>
+                  </div>
+                  <div className={styles.portfolio__videoTitle}>
+                    <span>{item.title}</span>
+                  </div>
+                </>
+              ) : (
+                <img src={item.url} alt={`Proyecto ${item.category}`} className={styles.portfolio__itemImage} />
+              )}
               <div className={styles.portfolio__itemOverlay}>
-                <span className={styles.portfolio__itemCategory}>{img.category}</span>
+                <span className={styles.portfolio__itemCategory}>
+                  {item.type === 'video' ? `▶ ${item.category}` : item.category}
+                </span>
               </div>
             </motion.div>
           ))}
@@ -125,7 +156,7 @@ export default function Portfolio() {
 
       {/* Lightbox */}
       <AnimatePresence>
-        {lightboxImg && (
+        {lightboxItem && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -139,12 +170,26 @@ export default function Portfolio() {
             <button className={`${styles.lightbox__nav} ${styles.lightbox__prev}`} onClick={prevImage}>
               <CaretLeft />
             </button>
-            <img 
-              src={lightboxImg.url} 
-              alt="Vista ampliada" 
-              className={styles.lightbox__image}
-              onClick={(e) => e.stopPropagation()} 
-            />
+
+            {lightboxItem.type === 'video' ? (
+              <video
+                key={lightboxItem.id}
+                src={lightboxItem.url}
+                className={styles.lightbox__video}
+                controls
+                autoPlay
+                playsInline
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <img 
+                src={lightboxItem.url} 
+                alt="Vista ampliada" 
+                className={styles.lightbox__image}
+                onClick={(e) => e.stopPropagation()} 
+              />
+            )}
+
             <button className={`${styles.lightbox__nav} ${styles.lightbox__next}`} onClick={nextImage}>
               <CaretRight />
             </button>

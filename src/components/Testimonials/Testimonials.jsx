@@ -2,11 +2,12 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay, EffectFade } from 'swiper/modules';
-import { Quotes } from '@phosphor-icons/react';
+import { Quotes, VideoCamera } from '@phosphor-icons/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 import styles from './Testimonials.module.css';
+import { reviewVideoUrl } from '../../assets/media/videos';
 
 const testimonials = [
   {
@@ -68,6 +69,28 @@ export default function Testimonials() {
             </SwiperSlide>
           ))}
         </Swiper>
+      </motion.div>
+
+      {/* Video de Reseñas */}
+      <motion.div
+        className={styles.testimonials__videoSection}
+        initial={{ opacity: 0, y: 40 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8, delay: 0.4 }}
+      >
+        <div className={styles.testimonials__videoLabel}>
+          <VideoCamera weight="fill" />
+          <span>Reseñas de nuestros clientes</span>
+        </div>
+        <div className={styles.testimonials__videoWrapper}>
+          <video
+            src={reviewVideoUrl}
+            className={styles.testimonials__video}
+            controls
+            playsInline
+            preload="metadata"
+          />
+        </div>
       </motion.div>
     </section>
   );

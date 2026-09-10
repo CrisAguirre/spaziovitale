@@ -111,6 +111,65 @@
   color: var(--color-gold);
 }
 
+/* Video Play Overlay */
+.portfolio__playOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.portfolio__playButton {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(205, 167, 83, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  font-size: 1.5rem;
+  box-shadow: 0 4px 20px rgba(205, 167, 83, 0.4);
+  transition: all var(--transition-base);
+  backdrop-filter: blur(4px);
+}
+
+.portfolio__item:hover .portfolio__playButton {
+  transform: scale(1.15);
+  background: rgba(205, 167, 83, 1);
+  box-shadow: 0 6px 30px rgba(205, 167, 83, 0.6);
+}
+
+/* Video Title Badge */
+.portfolio__videoTitle {
+  position: absolute;
+  top: var(--space-xs);
+  left: var(--space-xs);
+  right: var(--space-xs);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.portfolio__videoTitle span {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-accent);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-white);
+  letter-spacing: 0.5px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* Lightbox */
 .lightbox {
   position: fixed;
@@ -130,6 +189,17 @@
   object-fit: contain;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
+}
+
+/* Lightbox Video */
+.lightbox__video {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  background: #000;
+  cursor: default;
+  outline: none;
 }
 
 .lightbox__close {
@@ -198,5 +268,16 @@
   .portfolio__filter {
     font-size: 0.65rem;
     padding: 0.45rem 1rem;
+  }
+
+  .portfolio__playButton {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+  }
+
+  .lightbox__video {
+    max-width: 95vw;
+    max-height: 80vh;
   }
 }

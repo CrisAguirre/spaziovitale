@@ -1,186 +1,230 @@
-.companyOverview {
+/* ============================================
+   CompanyOverview — Split-panel Layout
+   ============================================ */
+
+/* Outer wrapper — no padding, panels own their padding */
+.overview {
   position: relative;
-  overflow: hidden;
-  padding: var(--section-padding);
 }
 
-/* Split Background setup */
-.companyOverview__splitBg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  /* Dark left, Snow right for desktop */
-  background: linear-gradient(90deg, var(--color-graphite-deeper) 50%, var(--color-snow) 50%);
-}
-
-.companyOverview__container {
-  max-width: var(--max-width);
-  margin: 0 auto;
+/* Two-panel horizontal grid (edge-to-edge) */
+.overview__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-xl);
-  position: relative;
-  z-index: 1;
 }
 
-.companyOverview__column {
+/* Each panel fills its half and owns its background */
+.overview__panel {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  padding: clamp(4rem, 8vw, 7rem) clamp(2rem, 5vw, 5rem);
 }
 
-.companyOverview__header {
+/* ——— Dark Panel (Mission / Vision) ——— */
+.overview__panelDark {
+  background: var(--gradient-dark);
+}
+
+/* ——— Light Panel (Services) ——— */
+.overview__panelLight {
+  background: var(--color-snow);
+}
+
+/* ——— Header ——— */
+.overview__header {
   text-align: center;
   margin-bottom: var(--space-lg);
 }
 
-/* Dark Theme Header (Left) */
-.darkTag {
-  color: var(--color-gold) !important;
-  background: rgba(205, 167, 83, 0.1) !important;
+.overview__tag {
+  display: inline-block;
+  font-family: var(--font-accent);
+  font-size: var(--fs-tag);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-gold);
+  background: rgba(205, 167, 83, 0.1);
+  padding: 0.4rem 1.2rem;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-sm);
 }
 
-.darkTitle {
-  color: var(--color-white) !important;
+.overview__tagLight {
+  color: var(--color-gold-dark);
+  background: var(--color-gold-50);
 }
 
-/* Card Common Styles */
-.companyOverview__card {
+.overview__title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-h2);
+  color: var(--color-white);
+  margin-top: var(--space-xs);
+}
+
+.overview__titleLight {
+  color: var(--color-graphite-dark);
+}
+
+/* ——— Swiper wrapper ——— */
+.overview__swiperWrap {
+  width: 100%;
+}
+
+/* ——— Shared card base ——— */
+.cardDark,
+.cardLight {
   border-radius: var(--radius-lg);
   padding: var(--space-xl) var(--space-lg);
   text-align: center;
   position: relative;
   overflow: hidden;
-  transition: all var(--transition-base);
-  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  min-height: 400px;
+  justify-content: center;
+  min-height: 360px;
+  transition: all var(--transition-base);
 }
 
-.companyOverview__cardIcon {
-  width: 80px;
-  height: 80px;
+.card__icon {
+  width: 76px;
+  height: 76px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   margin-bottom: var(--space-md);
-  font-size: 2.5rem;
-  transition: all var(--transition-base);
-  z-index: 2;
+  font-size: 2.2rem;
 }
 
-.companyOverview__cardNumber {
+.card__number {
   position: absolute;
-  top: 1.5rem;
+  top: 1.2rem;
   right: 1.5rem;
   font-family: var(--font-accent);
   font-size: 4rem;
   font-weight: 800;
   line-height: 1;
-  z-index: 1;
 }
 
-.companyOverview__cardTitle {
+.card__title {
   font-family: var(--font-heading);
   font-size: var(--fs-h3);
-  margin-bottom: var(--space-md);
-  z-index: 2;
+  margin-bottom: var(--space-sm);
 }
 
-.companyOverview__cardText {
-  line-height: 1.8;
+.card__text {
+  line-height: 1.85;
   font-size: var(--fs-body);
-  z-index: 2;
-  max-width: 90%;
+  max-width: 95%;
 }
 
-/* Dark Theme Card (Mission/Vision) */
-.darkCard {
+/* ——— Dark card specifics ——— */
+.cardDark {
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.darkCard .companyOverview__cardIcon {
+.cardDark::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  opacity: 0.4;
+  transition: opacity var(--transition-base);
+}
+
+.cardDark:hover::before {
+  opacity: 1;
+}
+
+.cardDark .card__icon {
   background: var(--color-gold-10);
 }
 
-.darkCard .companyOverview__cardNumber {
+.cardDark .card__number {
   color: rgba(205, 167, 83, 0.06);
 }
 
-.darkCard .companyOverview__cardTitle {
+.cardDark .card__title {
   color: var(--color-gold);
 }
 
-.darkCard .companyOverview__cardText {
+.cardDark .card__text {
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* Light Theme Card (Services) */
-.lightCard {
+/* ——— Light card specifics ——— */
+.cardLight {
   background: var(--color-white);
   border: 1px solid transparent;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
-.lightCard .companyOverview__cardIcon {
+.cardLight::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  transform: scaleX(0);
+  transition: transform var(--transition-base);
+}
+
+.cardLight:hover::after {
+  transform: scaleX(1);
+}
+
+.cardLight .card__icon {
   background: var(--color-gold-10);
 }
 
-.lightCard .companyOverview__cardNumber {
+.cardLight .card__number {
   color: rgba(205, 167, 83, 0.07);
 }
 
-.lightCard .companyOverview__cardTitle {
+.cardLight .card__title {
   color: var(--color-graphite-dark);
 }
 
-.lightCard .companyOverview__cardText {
+.cardLight .card__text {
   color: var(--color-mid-gray);
 }
 
-/* Swiper custom styles */
-.companyOverview__carouselWrapper {
-  width: 100%;
-}
-
-/* Adjust pagination colors based on theme */
-.darkSwiper :global(.swiper-pagination-bullet) {
+/* ——— Swiper pagination theming ——— */
+.swiperDark :global(.swiper-pagination-bullet) {
   background: rgba(255, 255, 255, 0.3) !important;
 }
-
-.darkSwiper :global(.swiper-pagination-bullet-active) {
+.swiperDark :global(.swiper-pagination-bullet-active) {
   background: var(--color-gold) !important;
+  transform: scale(1.2);
 }
 
-.lightSwiper :global(.swiper-pagination-bullet) {
+.swiperLight :global(.swiper-pagination-bullet) {
   background: var(--color-graphite-light) !important;
 }
-
-.lightSwiper :global(.swiper-pagination-bullet-active) {
+.swiperLight :global(.swiper-pagination-bullet-active) {
   background: var(--color-gold) !important;
+  transform: scale(1.2);
 }
 
+/* ——— Responsive ——— */
 @media (max-width: 992px) {
-  /* On mobile/tablet, stack vertically and adjust background split to top/bottom */
-  .companyOverview__splitBg {
-    background: linear-gradient(180deg, var(--color-graphite-deeper) 50%, var(--color-snow) 50%);
-  }
-  
-  .companyOverview__container {
+  .overview__grid {
     grid-template-columns: 1fr;
-    gap: 4rem;
   }
-  
-  .companyOverview__card {
-    min-height: 350px;
+
+  .overview__panel {
+    padding: clamp(3rem, 8vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+  }
+
+  .cardDark,
+  .cardLight {
+    min-height: 300px;
   }
 }

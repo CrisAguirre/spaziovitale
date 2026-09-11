@@ -47,26 +47,25 @@ export default function CompanyOverview() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.15 });
 
   return (
-    <section className={styles.companyOverview} id="company-overview" ref={ref}>
-      <div className={styles.companyOverview__splitBg}></div>
-      <div className={styles.companyOverview__container}>
-        
-        {/* Left Column: Mission & Vision */}
-        <div className={styles.companyOverview__column}>
+    <section className={styles.overview} id="company-overview" ref={ref}>
+      <div className={styles.overview__grid}>
+
+        {/* Left Panel: Mission & Vision (Dark) */}
+        <div className={`${styles.overview__panel} ${styles.overview__panelDark}`}>
           <motion.div
-            className={styles.companyOverview__header}
+            className={styles.overview__header}
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className={`section__tag ${styles.darkTag}`}>Nuestro propósito</span>
-            <h2 className={`section__title ${styles.darkTitle}`}>Visión & Misión</h2>
+            <span className={styles.overview__tag}>Nuestro propósito</span>
+            <h2 className={styles.overview__title}>Visión & Misión</h2>
           </motion.div>
-          
+
           <motion.div
-            className={styles.companyOverview__carouselWrapper}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            className={styles.overview__swiperWrap}
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <Swiper
@@ -74,17 +73,16 @@ export default function CompanyOverview() {
               effect="fade"
               pagination={{ clickable: true }}
               autoplay={{ delay: 6000, disableOnInteraction: false }}
-              autoHeight={true}
               loop={true}
-              className={styles.darkSwiper}
+              className={styles.swiperDark}
             >
               {missionVision.map((item, i) => (
                 <SwiperSlide key={i}>
-                  <div className={`${styles.companyOverview__card} ${styles.darkCard}`}>
-                    <div className={styles.companyOverview__cardIcon}>{item.icon}</div>
-                    <span className={styles.companyOverview__cardNumber}>{item.number}</span>
-                    <h3 className={styles.companyOverview__cardTitle}>{item.title}</h3>
-                    <p className={styles.companyOverview__cardText}>{item.text}</p>
+                  <div className={styles.cardDark}>
+                    <span className={styles.card__number}>{item.number}</span>
+                    <div className={styles.card__icon}>{item.icon}</div>
+                    <h3 className={styles.card__title}>{item.title}</h3>
+                    <p className={styles.card__text}>{item.text}</p>
                   </div>
                 </SwiperSlide>
               ))}
@@ -92,22 +90,22 @@ export default function CompanyOverview() {
           </motion.div>
         </div>
 
-        {/* Right Column: Services */}
-        <div className={styles.companyOverview__column}>
+        {/* Right Panel: Services (Light) */}
+        <div className={`${styles.overview__panel} ${styles.overview__panelLight}`}>
           <motion.div
-            className={styles.companyOverview__header}
+            className={styles.overview__header}
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1 }}
           >
-            <span className="section__tag">Qué hacemos</span>
-            <h2 className="section__title">Nuestros Servicios</h2>
+            <span className={`${styles.overview__tag} ${styles.overview__tagLight}`}>Qué hacemos</span>
+            <h2 className={`${styles.overview__title} ${styles.overview__titleLight}`}>Nuestros Servicios</h2>
           </motion.div>
-          
+
           <motion.div
-            className={styles.companyOverview__carouselWrapper}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            className={styles.overview__swiperWrap}
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
             <Swiper
@@ -115,17 +113,16 @@ export default function CompanyOverview() {
               effect="fade"
               pagination={{ clickable: true }}
               autoplay={{ delay: 5000, disableOnInteraction: false }}
-              autoHeight={true}
               loop={true}
-              className={styles.lightSwiper}
+              className={styles.swiperLight}
             >
               {services.map((item, i) => (
                 <SwiperSlide key={i}>
-                  <div className={`${styles.companyOverview__card} ${styles.lightCard}`}>
-                    <div className={styles.companyOverview__cardIcon}>{item.icon}</div>
-                    <span className={styles.companyOverview__cardNumber}>{item.number}</span>
-                    <h3 className={styles.companyOverview__cardTitle}>{item.title}</h3>
-                    <p className={styles.companyOverview__cardText}>{item.description}</p>
+                  <div className={styles.cardLight}>
+                    <span className={styles.card__number}>{item.number}</span>
+                    <div className={styles.card__icon}>{item.icon}</div>
+                    <h3 className={styles.card__title}>{item.title}</h3>
+                    <p className={styles.card__text}>{item.description}</p>
                   </div>
                 </SwiperSlide>
               ))}

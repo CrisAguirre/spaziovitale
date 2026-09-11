@@ -1,0 +1,186 @@
+.companyOverview {
+  position: relative;
+  overflow: hidden;
+  padding: var(--section-padding);
+}
+
+/* Split Background setup */
+.companyOverview__splitBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  /* Dark left, Snow right for desktop */
+  background: linear-gradient(90deg, var(--color-graphite-deeper) 50%, var(--color-snow) 50%);
+}
+
+.companyOverview__container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  position: relative;
+  z-index: 1;
+}
+
+.companyOverview__column {
+  display: flex;
+  flex-direction: column;
+}
+
+.companyOverview__header {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+/* Dark Theme Header (Left) */
+.darkTag {
+  color: var(--color-gold) !important;
+  background: rgba(205, 167, 83, 0.1) !important;
+}
+
+.darkTitle {
+  color: var(--color-white) !important;
+}
+
+/* Card Common Styles */
+.companyOverview__card {
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl) var(--space-lg);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-base);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.companyOverview__cardIcon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-bottom: var(--space-md);
+  font-size: 2.5rem;
+  transition: all var(--transition-base);
+  z-index: 2;
+}
+
+.companyOverview__cardNumber {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-family: var(--font-accent);
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1;
+  z-index: 1;
+}
+
+.companyOverview__cardTitle {
+  font-family: var(--font-heading);
+  font-size: var(--fs-h3);
+  margin-bottom: var(--space-md);
+  z-index: 2;
+}
+
+.companyOverview__cardText {
+  line-height: 1.8;
+  font-size: var(--fs-body);
+  z-index: 2;
+  max-width: 90%;
+}
+
+/* Dark Theme Card (Mission/Vision) */
+.darkCard {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.darkCard .companyOverview__cardIcon {
+  background: var(--color-gold-10);
+}
+
+.darkCard .companyOverview__cardNumber {
+  color: rgba(205, 167, 83, 0.06);
+}
+
+.darkCard .companyOverview__cardTitle {
+  color: var(--color-gold);
+}
+
+.darkCard .companyOverview__cardText {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Light Theme Card (Services) */
+.lightCard {
+  background: var(--color-white);
+  border: 1px solid transparent;
+  box-shadow: var(--shadow-sm);
+}
+
+.lightCard .companyOverview__cardIcon {
+  background: var(--color-gold-10);
+}
+
+.lightCard .companyOverview__cardNumber {
+  color: rgba(205, 167, 83, 0.07);
+}
+
+.lightCard .companyOverview__cardTitle {
+  color: var(--color-graphite-dark);
+}
+
+.lightCard .companyOverview__cardText {
+  color: var(--color-mid-gray);
+}
+
+/* Swiper custom styles */
+.companyOverview__carouselWrapper {
+  width: 100%;
+}
+
+/* Adjust pagination colors based on theme */
+.darkSwiper :global(.swiper-pagination-bullet) {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.darkSwiper :global(.swiper-pagination-bullet-active) {
+  background: var(--color-gold) !important;
+}
+
+.lightSwiper :global(.swiper-pagination-bullet) {
+  background: var(--color-graphite-light) !important;
+}
+
+.lightSwiper :global(.swiper-pagination-bullet-active) {
+  background: var(--color-gold) !important;
+}
+
+@media (max-width: 992px) {
+  /* On mobile/tablet, stack vertically and adjust background split to top/bottom */
+  .companyOverview__splitBg {
+    background: linear-gradient(180deg, var(--color-graphite-deeper) 50%, var(--color-snow) 50%);
+  }
+  
+  .companyOverview__container {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+  
+  .companyOverview__card {
+    min-height: 350px;
+  }
+}

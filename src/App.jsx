@@ -1,8 +1,7 @@
 import Navbar from './components/Navbar/Navbar'
 import Hero from './components/Hero/Hero'
 import About from './components/About/About'
-import MissionVision from './components/MissionVision/MissionVision'
-import Services from './components/Services/Services'
+import CompanyOverview from './components/CompanyOverview/CompanyOverview'
 import Portfolio from './components/Portfolio/Portfolio'
 import Materials from './components/Materials/Materials'
 import Testimonials from './components/Testimonials/Testimonials'
@@ -17,8 +16,7 @@ function App() {
       <main>
         <Hero />
         <About />
-        <MissionVision />
-        <Services />
+        <CompanyOverview />
         <Portfolio />
         <Materials />
         <Testimonials />

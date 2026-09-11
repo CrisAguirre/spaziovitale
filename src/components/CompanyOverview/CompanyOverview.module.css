@@ -2,77 +2,86 @@
    CompanyOverview — Split-panel Layout
    ============================================ */
 
-/* Outer wrapper — no padding, panels own their padding */
 .overview {
   position: relative;
 }
 
-/* Two-panel horizontal grid (edge-to-edge) */
+/* Edge-to-edge two-column grid */
 .overview__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
 
-/* Each panel fills its half and owns its background */
-.overview__panel {
+/* ——— Panel base ——— */
+.panelDark,
+.panelLight {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
   padding: clamp(4rem, 8vw, 7rem) clamp(2rem, 5vw, 5rem);
 }
 
-/* ——— Dark Panel (Mission / Vision) ——— */
-.overview__panelDark {
+.panelDark {
   background: var(--gradient-dark);
 }
 
-/* ——— Light Panel (Services) ——— */
-.overview__panelLight {
+.panelLight {
   background: var(--color-snow);
 }
 
 /* ——— Header ——— */
-.overview__header {
+.panelHeader {
   text-align: center;
   margin-bottom: var(--space-lg);
 }
 
-.overview__tag {
+/* Tags */
+.tagDark,
+.tagLight {
   display: inline-block;
   font-family: var(--font-accent);
   font-size: var(--fs-tag);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: var(--color-gold);
-  background: rgba(205, 167, 83, 0.1);
   padding: 0.4rem 1.2rem;
   border-radius: var(--radius-full);
   margin-bottom: var(--space-sm);
 }
 
-.overview__tagLight {
+.tagDark {
+  color: var(--color-gold);
+  background: rgba(205, 167, 83, 0.12);
+}
+
+.tagLight {
   color: var(--color-gold-dark);
   background: var(--color-gold-50);
 }
 
-.overview__title {
+/* Titles */
+.titleDark,
+.titleLight {
   font-family: var(--font-heading);
   font-size: var(--fs-h2);
-  color: var(--color-white);
   margin-top: var(--space-xs);
 }
 
-.overview__titleLight {
+.titleDark {
+  color: var(--color-white);
+}
+
+.titleLight {
   color: var(--color-graphite-dark);
 }
 
-/* ——— Swiper wrapper ——— */
-.overview__swiperWrap {
+/* ——— Card Area ——— */
+.cardArea {
   width: 100%;
+  max-width: 520px;
 }
 
-/* ——— Shared card base ——— */
+/* ——— Card shared ——— */
 .cardDark,
 .cardLight {
   border-radius: var(--radius-lg);
@@ -83,23 +92,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 340px;
   justify-content: center;
-  min-height: 360px;
-  transition: all var(--transition-base);
 }
 
-.card__icon {
-  width: 76px;
-  height: 76px;
+.cardIcon {
+  width: 72px;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   margin-bottom: var(--space-md);
-  font-size: 2.2rem;
+  font-size: 2rem;
 }
 
-.card__number {
+.cardNumber {
   position: absolute;
   top: 1.2rem;
   right: 1.5rem;
@@ -109,19 +117,19 @@
   line-height: 1;
 }
 
-.card__title {
+.cardTitle {
   font-family: var(--font-heading);
   font-size: var(--fs-h3);
   margin-bottom: var(--space-sm);
 }
 
-.card__text {
+.cardText {
   line-height: 1.85;
   font-size: var(--fs-body);
   max-width: 95%;
 }
 
-/* ——— Dark card specifics ——— */
+/* ——— Dark card (glassmorphism) ——— */
 .cardDark {
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(20px);
@@ -135,31 +143,26 @@
   top: 0; left: 0; right: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
-  opacity: 0.4;
-  transition: opacity var(--transition-base);
+  opacity: 0.5;
 }
 
-.cardDark:hover::before {
-  opacity: 1;
-}
-
-.cardDark .card__icon {
+.cardDark .cardIcon {
   background: var(--color-gold-10);
 }
 
-.cardDark .card__number {
+.cardDark .cardNumber {
   color: rgba(205, 167, 83, 0.06);
 }
 
-.cardDark .card__title {
+.cardDark .cardTitle {
   color: var(--color-gold);
 }
 
-.cardDark .card__text {
+.cardDark .cardText {
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* ——— Light card specifics ——— */
+/* ——— Light card ——— */
 .cardLight {
   background: var(--color-white);
   border: 1px solid transparent;
@@ -170,47 +173,65 @@
   content: '';
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 1px;
+  height: 2px;
   background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
-  transform: scaleX(0);
-  transition: transform var(--transition-base);
+  opacity: 0.4;
 }
 
-.cardLight:hover::after {
-  transform: scaleX(1);
-}
-
-.cardLight .card__icon {
+.cardLight .cardIcon {
   background: var(--color-gold-10);
 }
 
-.cardLight .card__number {
+.cardLight .cardNumber {
   color: rgba(205, 167, 83, 0.07);
 }
 
-.cardLight .card__title {
+.cardLight .cardTitle {
   color: var(--color-graphite-dark);
 }
 
-.cardLight .card__text {
+.cardLight .cardText {
   color: var(--color-mid-gray);
 }
 
-/* ——— Swiper pagination theming ——— */
-.swiperDark :global(.swiper-pagination-bullet) {
-  background: rgba(255, 255, 255, 0.3) !important;
-}
-.swiperDark :global(.swiper-pagination-bullet-active) {
-  background: var(--color-gold) !important;
-  transform: scale(1.2);
+/* ——— Dot indicators ——— */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: var(--space-md);
 }
 
-.swiperLight :global(.swiper-pagination-bullet) {
-  background: var(--color-graphite-light) !important;
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
 }
-.swiperLight :global(.swiper-pagination-bullet-active) {
-  background: var(--color-gold) !important;
-  transform: scale(1.2);
+
+.dotDark {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dotLight {
+  background: var(--color-mid-gray);
+  opacity: 0.3;
+}
+
+.dotActive.dotDark {
+  background: var(--color-gold);
+  transform: scale(1.3);
+  box-shadow: 0 0 8px rgba(205, 167, 83, 0.5);
+}
+
+.dotActive.dotLight {
+  background: var(--color-gold);
+  opacity: 1;
+  transform: scale(1.3);
+  box-shadow: 0 0 8px rgba(205, 167, 83, 0.4);
 }
 
 /* ——— Responsive ——— */
@@ -219,12 +240,13 @@
     grid-template-columns: 1fr;
   }
 
-  .overview__panel {
+  .panelDark,
+  .panelLight {
     padding: clamp(3rem, 8vw, 5rem) clamp(1.5rem, 5vw, 4rem);
   }
 
   .cardDark,
   .cardLight {
-    min-height: 300px;
+    min-height: 280px;
   }
 }

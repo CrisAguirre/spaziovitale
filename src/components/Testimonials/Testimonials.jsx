@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { VideoCamera } from '@phosphor-icons/react';
 import styles from './Testimonials.module.css';
@@ -6,6 +7,14 @@ import { reviewVideoUrl } from '../../assets/media/videos';
 
 export default function Testimonials() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (inView && videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [inView]);
 
   return (
     <section className={styles.testimonials} id="testimonials" ref={ref}>
@@ -32,9 +41,11 @@ export default function Testimonials() {
         </div>
         <div className={styles.testimonials__videoWrapper}>
           <video
+            ref={videoRef}
             src={reviewVideoUrl}
             className={styles.testimonials__video}
             controls
+            muted
             playsInline
             preload="metadata"
           />

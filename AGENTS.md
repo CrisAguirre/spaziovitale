@@ -23,9 +23,10 @@ spaziovitale/
     hooks/useScrollAnimation.js  (IntersectionObserver, retorna [setRef, isVisible])
     styles/variables.css (design tokens) + styles/global.css (reset, utilidades, botones)
     assets/media/images.js, videos.js (listas de medios) + assets/hero.png
+    assets/media/Modern_kitchen.jpg (imagen sección About, importada por bundle — NO está en public/)
   public/
     logo.png, favicon.svg, icons.svg
-    images/hero-bg.jpg, images/about.jpg
+    images/hero-bg.jpg (about.jpg existe pero YA NO SE USA — About usa Modern_kitchen.jpg por import)
     media/*.jpg, *.mp4, images.js  (servidos como /media/..., /images/...)
 ```
 
@@ -52,10 +53,15 @@ No hay tests. Verificación = `npm run build` + `npm run lint` sin errores.
    ```
    `useScrollAnimation(threshold)` existe como alternativa con callback-ref. `Hero.jsx` usa además canvas + `requestAnimationFrame` con cleanup en `useEffect` — replicar ese cleanup (cancelAnimationFrame + removeEventListener) en cualquier efecto con listeners/animación.
 5. **Iconos:** solo `@phosphor-icons/react` (ej. `MapPin, Phone, InstagramLogo, EnvelopeSimple`). No añadir otras librerías de iconos.
-6. **Medios:** imágenes/videos van en `public/media/` y se referencian como `/media/<archivo>`; las listas canónicas están en `src/assets/media/images.js` (`mediaImages` con `{id, url, category}` + `videoUrl`) y `videos.js`. No importar mp4/jpg desde `src/assets` con `import`; usar rutas públicas. Ojo: hay filenames con espacios, tildes y `;` — mantenerlos exactos o renombrar con slug si se toca el Portfolio.
+6. **Medios:** galería/videos van en `public/media/` y se referencian como `/media/<archivo>`; las listas canónicas están en `src/assets/media/images.js` (`mediaImages` con `{id, url, category}` + `videoUrl`) y `videos.js` (`mediaVideos` + `reviewVideoUrl`). **Excepción:** `About.jsx` importa `../../assets/media/Modern_kitchen.jpg` por `import` para que Vite la empaquete con hash (`dist/assets/Modern_kitchen-*.jpg`). No importar mp4/jpg desde `src/assets` salvo este caso documentado. Ojo: hay filenames con espacios, tildes y `;` — mantenerlos exactos o renombrar con slug si se toca el Portfolio.
 7. **Formulario Contacto:** `Contact.jsx` hace `POST` con `FormData` a `https://formsubmit.co/ajax/spaziovitale.gerencia@gmail.com` + hidden fields `_subject, _captcha=false, _template=table`. Mantener estados `formData/status/loading` y mensajes en español. No migrar a emailjs sin pedirlo.
 8. **Idioma/contenido:** todo el copy en español (es-CO). Datos reales: Cra 31B No. 19A–08, Las Cuadras, Pasto; WhatsApp `https://wa.me/573103888709`; Instagram `@SPAZIOVITALEMUEBLESYCOCINAS`; email `contacto@spaziovitale.com` / `spaziovitale.gerencia@gmail.com`.
 9. **Accesibilidad/responsive:** secciones con `id` para anclas (`hero, portfolio, contact...`), `alt` en imágenes, `onError` con fallback que oculta media rota (ver Hero), y fluid type ya definido — no romper `overflow-x:hidden` del body.
+
+## Detalles por sección (decisiones vigentes)
+
+- **About ("20 años creando espacios que inspiran"):** imagen = `Modern_kitchen.jpg` (2752×1536, 16:9) vía `import aboutImg`. Solo desktop (`@media min-width: 969px`): grid `4fr/8fr` (~33/67), gap `md`, texto `max-width: 400px` alineado a la derecha, wrapper imagen `aspect-ratio: 16/10`, imagen `min-height: 440px / max-height: 520px` (landscape, no cuadrada). Tablet (`max-width: 968px`: 1 columna, imagen 350px) y móvil (`480px`: stats 1 columna) NO tocar.
+- **Testimonials ("Lo que dicen nuestros clientes"):** el `<video>` (`reviewVideoUrl` = `/media/Videos/receñas.mp4`) hace **autoplay muteado al llegar el título a viewport**: `useInView({triggerOnce:true, threshold:0.2})` + `videoRef` + `useEffect` que ejecuta `video.muted=true; video.play().catch(()=>{})`. Atributos requeridos: `muted playsInline controls preload="metadata"` (sin `muted` el navegador bloquea el autoplay). El usuario puede activar el sonido desde los controles.
 
 ## No hacer
 

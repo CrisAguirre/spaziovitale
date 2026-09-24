@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useState, useEffect } from 'react';
+import aboutImg from '../../assets/media/Modern_kitchen.jpg';
 import styles from './About.module.css';
 
 function AnimatedCounter({ target, duration = 2 }) {
@@ -99,8 +100,8 @@ export default function About() {
           transition={{ duration: 0.9, delay: 0.3, ease: [0.19, 1, 0.22, 1] }}
         >
           <img
-            src="/images/about.jpg"
-            alt="Sala de exhibición Spazio Vitale"
+            src={aboutImg}
+            alt="Cocina moderna Spazio Vitale"
             className={styles.about__image}
             onError={(e) => {
               e.target.src = 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80';
